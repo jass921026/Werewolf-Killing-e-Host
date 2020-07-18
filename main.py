@@ -70,14 +70,14 @@ def wincheck():
         elif player_data[2][i]==1:
             w+=1
     if v==0 or g==0:
-        print("遊戲結束，狼人勝利！")
-        play('gameover')
-        play('wolfwin')
+        play('gameover',blocking=True)
+        play('wolfwin',blocking=True)
+        ConfText(bg,"遊戲結束，狼人勝利!")
         win=1
     elif w==0:
-        print("遊戲結束，好人勝利！")
-        play('gameover')
-        play('goodwin')
+        play('gameover',blocking=True)
+        play('goodwin',blocking=True)
+        ConfText(bg,"遊戲結束，好人勝利!")
         win=1
     else:
         return
@@ -92,7 +92,7 @@ def guard(n):
     r=guard
 '''
 def print_data(data):
-    for i in range(5):
+    for i in range(4):
         for j in range(12):
             print(data[i][j],end=' ')
         print()
@@ -201,10 +201,9 @@ def huntershot():
         return
     else:
         todaydie[gun-1]=1
-        player_data[1][gun-1]=1
         play(str(gun),blocking=True)
         play('eliminate')
-        TextInput(bg,str(gun)+" 號玩家被槍殺")
+        Text(bg,str(gun)+" 號玩家被槍殺")
         wincheck()
 def idiot(n):
     global idiotnum
@@ -257,8 +256,6 @@ def bright(n):
                 minnum=i+1
             play(str(i+1))
             Text(bg,str(i+1)+' 號 ',sec=2)
-            if n!=1:
-                todaydie[i]=0
             maxnum=i+1
             dnum+=1
         else:
@@ -273,16 +270,18 @@ def bright(n):
         Text(bg,"被殺死")
     if wolfkill==hunternum:
         huntershot()
-    if n==1:
-        for i in range(players):
-            if todaydie[i]!=0:
+    for i in range(players):
+        if todaydie[i]!=0:
+            player_data[1][i]=1
+            if n==1:
+                play(str(i+1))
                 play('lastword')
-                ConfText(bg,'請發表遺言')
-        
-    else:
-        return
+                ConfText(bg,str(i+1)+'號請發表遺言')
+        todaydie[i]=0
+    return
 def speaking(n):
     global wolfkill, poison, dovote, players,minnum,maxnum
+    dovote=1
     if peace:
         i=randint(1,players)
         while player_data[1][i-1]==1:
@@ -363,11 +362,7 @@ def vote():
                 player_data[1][idiotnum-1]=2
             play('lastword')
             ConfText(bg,'請發表遺言')
-            if int(input())==1:
-                return
-            else:
-                dovote=1
-                return
+            return
     
 
 

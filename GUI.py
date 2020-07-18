@@ -134,6 +134,7 @@ class Text:
         self.stage.update()
     def conf(self):
         self.frame.place_forget()
+        self.stage.update()
 class ConfText:
     def __init__(self,stage,text):
         self.stage=stage
@@ -192,8 +193,8 @@ class TextInput:
     def __init__(self,stage,text,res):
         self.stage=stage
         self.frame=Frame(self.stage,bg="red",width=800,height=500)
-        self.Text=Label(self.frame,text=text,font=(myFont,20),width="25",height="1")
-        self.Text.place(x=220,y=50)
+        self.Text=Label(self.frame,text=text,font=(myFont,20),width="40",height="1")
+        self.Text.place(x=150,y=50)
         self.res=res
         self.res[0]=0
         self.var=StringVar()
@@ -215,6 +216,7 @@ class TextInput:
 if(__name__=='__main__'):
     bg=init(12)
     myid=[0]
+    TextInput(bg,text="12號啟動腳色技能，請問你要帶走的玩家是?",res=myid)
     t=Talk(bg,5,myid)
     myEnter=SingleSelection(bg,"test",myid)
     print(myid[0])
